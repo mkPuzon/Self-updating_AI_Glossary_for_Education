@@ -100,6 +100,7 @@ def get_term_details(term_id: int):
 
         sources = []
         all_tags = []
+        article_dates = []
 
         if article_ids:
             # get all articles that reference the specified keyword
@@ -121,6 +122,11 @@ def get_term_details(term_id: int):
                     "link": art["full_arxiv_url"],
                 })
                 all_tags.extend(parse_tags(art["tags"]))
+                if art["date_submitted"]:
+                    article_dates.append(art["date_submitted"])
+
+        sorted_dates = sorted(article_dates)
+        dates_range = [sorted_dates[0], sorted_dates[-1]] if sorted_dates else []
 
         # find other keywords from the DB as related terms 
         if article_ids:
@@ -149,6 +155,7 @@ def get_term_details(term_id: int):
         "sources": sources,
         "related_terms": [dict(row) for row in related_terms],
         "tags": [{"name": t} for t in list(set(all_tags))[:5]],
+        "dates": dates_range,
     }
 
 
