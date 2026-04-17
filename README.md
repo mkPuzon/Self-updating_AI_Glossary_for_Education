@@ -110,7 +110,7 @@ AURA is a self-updating glossary built upon an end-to-end data pipeline that aut
 
 Once running, the services are available at:
 
-- **Frontend**: [http://localhost](http://localhost) — searchable glossary of AI terms
+- **Frontend**: [http://localhost](http://localhost:3000) — searchable glossary of AI terms
 - **Dashboard**: [http://localhost:8501](http://localhost:8501) — backend analytics
 - **API**: [http://localhost/api/terms](http://localhost/api/terms) — JSON endpoint (proxied through Nginx)
 
@@ -254,6 +254,8 @@ This project is still in progress. Up next we are working on...
 - [X] Dashboard: connect to SQLite, display scraping metrics and category distribution
 - [X] Frontend: Nginx container serving web UI, connected to SQLite via FastAPI
 - [X] Automated scripts: logging, PDF cleanup
+- [ ] Search vs discovery page? 
+  - [ ] Graph view
 - [ ] Rework front end using svelte
 - [ ] Tune sys prompts for definition extraction
 - [ ] Create reports for model timing/cost statistics in Streamlit dashboard
