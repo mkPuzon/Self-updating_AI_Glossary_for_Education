@@ -1,17 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { appState, type Word, TIME_FILTERS } from '$lib/appState.svelte';
+	import { appState, type Word, TIME_FILTERS } from '$lib/appState.svelte.ts';
 
 	onMount(async () => {
 		try {
-			const response = await fetch('http://localhost/api/terms');
-
-			if (!response.ok) {
-				throw new Error('Backend is not responding!');
-			}
-
-			const rawData = await response.json();
-			appState.words = rawData;
+			await appState.loadTerms();
 		} catch (error) {
 			console.error('Fetch failed:', error);
 			appState.words = [

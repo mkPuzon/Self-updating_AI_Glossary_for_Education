@@ -408,7 +408,7 @@ def dump_metadata_to_db(json_filepath: str, db_path: str,
     return papers_inserted, papers_duplicate, papers_no_definitions
         
 if __name__ == "__main__":
-    today = datetime.today().strftime('%Y-%M-%d')
+    today = datetime.today().strftime('%Y-%m-%d')
     today = "2026-01-28"
 
     DATA_DIR = f'data/metadata/metadata_{today}.json'

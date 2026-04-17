@@ -37,16 +37,35 @@ services:
     depends_on:
       - processor
 
-  # Nginx; front end
+  # SvelteKit frontend
+  frontend:
+    build:
+      context: ./aura-frontend
+      dockerfile: Dockerfile
+    expose:
+      - "3000"
+    environment:
+      - PORT=3000
+      - ORIGIN=http://localhost
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # Nginx; reverse proxy
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
-      # map config
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      # map html
-      - ./nginx/html:/usr/share/nginx/html:ro
     depends_on:
-      - api
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_started
 

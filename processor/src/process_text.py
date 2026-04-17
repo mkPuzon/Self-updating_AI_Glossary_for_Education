@@ -127,7 +127,7 @@ def query_definitions(keywords: List[str], paper_txt: str, model: str = "gemma3:
         try:
             client = OpenAI(api_key=os.environ.get("OPENAI_KEY"))
             response = client.responses.create(
-                model="gpt-5-mini",
+                model=model,
                 instructions="You are a Python dictionary generator. Do not return anything except for a valid Python dictionary.",
                 input=sys_prompt + paper_txt,
             )
@@ -496,7 +496,7 @@ def generate_keywords_and_defs(batch_filepath: str, kwd_model: str = "gemma3:12b
 
 if __name__ == "__main__":
     from datetime import datetime
-    today = datetime.today().strftime("%Y-%M-%d")
+    today = datetime.today().strftime("%Y-%m-%d")
         
     load_dotenv()
 
