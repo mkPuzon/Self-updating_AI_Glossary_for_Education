@@ -78,10 +78,11 @@ def process_paper(paper: dict, engine) -> None:
 
 def job():
     today = dt.datetime.today().strftime("%Y-%m-%d")
-    print(f"Running job for {today}...")
+    num_papers = 25
+    print(f"Running job to scrape {num_papers} paper for {today}...")
 
     print("---- 1. Fetch metadata from arXiv ----")
-    papers = fetch_arxiv_papers("cs.AI", 50)
+    papers = fetch_arxiv_papers("cs.AI", num_papers)
     print(f"  Fetched {len(papers)} papers")
 
     engine = get_engine(DB_PATH)
@@ -108,13 +109,13 @@ def job():
 if __name__ == "__main__":
     import schedule
 
-    # try:
-    #     job()
-    # except KeyboardInterrupt:
-    #     sys.exit(0)
-    # except Exception as e:
-    #     print(f"Fatal error: {e}")
-    #     sys.exit(1)
+    try:
+        job()
+    except KeyboardInterrupt:
+        sys.exit(0)
+    except Exception as e:
+        print(f"Fatal error: {e}")
+        sys.exit(1)
 
     schedule.every().day.at("02:00").do(job)
     
