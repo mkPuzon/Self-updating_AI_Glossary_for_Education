@@ -1,0 +1,14 @@
+# Python native chron replacement
+schedule==1.2.2
+# ORM
+sqlalchemy==2.0.40
+# API
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+# Processor
+requests==2.32.3
+openai==1.82.0
+pypdf==5.4.0
+# testing
+pytest
+httpx

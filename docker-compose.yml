@@ -1,0 +1,35 @@
+services:
+  processor:
+    build:
+      context: .
+      dockerfile: processor/Dockerfile
+    volumes:
+      - ./data/db:/data/db
+      - ./data/backups:/data/backups
+    env_file: .env
+    environment:
+      - DB_PATH=/data/db/sage.db
+      - BACKUP_DIR=/data/backups
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    volumes:
+      - ./data/db:/data/db
+    environment:
+      - DB_PATH=/data/db/sage.db
+    expose:
+      - "8000"
+    depends_on:
+      - processor
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - api

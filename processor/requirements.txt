@@ -1,13 +1,5 @@
-# Tested on Ubuntu 23.04 using Python 3.11.4
-
-requests        # request papers from arXiv
-feedparser      # parse atom feed from arXiv request
-
-pypdf           # base pdf processing
-# docling         # improved pdf processing 
-
-python-dotenv   # for environment variables
-schedule        # Python-native chron replacement
-
-openai          # for querying OpenAI models via API
-ollama          # for querying local models
+schedule==1.2.2
+sqlalchemy==2.0.40
+requests==2.32.3
+openai==1.82.0
+pypdf==5.4.0

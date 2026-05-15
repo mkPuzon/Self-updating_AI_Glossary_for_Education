@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAGE — AI Research Glossary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Viaoda+Libre&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SAGE</h1>
+    <p>Explore cutting-edge AI research through a living glossary.</p>
+  </header>
+
+  <main>
+    <div class="search-container">
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search AI terms (e.g. Transformer, Fine-tuning...)"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+
+    <div id="modal-overlay" class="hidden">
+      <div id="detail-panel"></div>
+    </div>
+
+    <div id="results-list" class="results-list" aria-live="polite"></div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
