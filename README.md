@@ -4,38 +4,10 @@ A website for exploring cutting-edge AI research through a dynamic, LLM-generate
 
 ## Architecture
 
-```
-                        ┌──────────────────────────────────────┐
-                        │          Docker network              │
-                        │                                      │
-   Browser              │  ┌──────────┐      ┌─────────────┐   │
-      │                 │  │          │      │             │   │
-      │  HTTP :8080     │  │  nginx   │ ───► │  api        │   │
-      └────────────────►│  │          │      │  (FastAPI)  │   │
-                        │  │ :80      │      │  :8000      │   │
-                        │  └──────────┘      └─────────────┘   │
-                        │       │                   │          │
-                        │  serves static        reads DB       │
-                        │  frontend files           │          │
-                        │                           ▼          │
-                        │                  ┌──────────────┐    │
-                        │                  │  sage.db     │    │
-                        │                  │  (SQLite)    │    │
-                        │                  │              │    │
-                        │                  │  bind mount  │    │
-                        │                  │  ./data/db/  │    │
-                        │                  └──────────────┘    │
-                        │                           ▲          │
-                        │                      writes DB       │
-                        │                           │          │
-                        │                  ┌─────────────────┐ │
-                        │                  │  processor      │ │
-                        │                  │  (Python)       │ │
-                        │                  │                 │ │
-                        │                  │  arXiv ──► LLM  │ │
-                        │                  └─────────────────┘ │
-                        └──────────────────────────────────────┘
-```
+SAGE runs on three services
+1) Nginx instance to serve the front end and hit the api
+2) The api to query the database
+3) A scheuled Python data processor
 
 All three services run in a single Docker Compose network. The only port exposed to the host is `8080` on nginx. The `processor` and `api` containers share a SQLite database via a bind-mounted host directory (`./data/db/`), so data persists across container restarts.
 
@@ -62,11 +34,13 @@ A one-shot Python script that runs the full data pipeline scheduled with the Pyt
 `PYTHONPATH` has two entries: `/app` so that `import shared.models` resolves, and `/app/processor` so that `processor/main.py`'s existing `from src.scraper import ...` resolves without modification.
 
 **Environment** (injected via `env_file: .env` in Compose):
-- `DB_PATH` — absolute path to the SQLite file inside the container (`/data/db/sage.db`)
-- `BACKUP_DIR` — absolute path for daily backup files (`/data/backups`)
 - `OPENAI_KEY` — OpenAI API key
 - `KEYWORD_PROMPT_1` — prompt template for keyword extraction
 - `DEFINTION_PROMPT_1` — prompt template for definition extraction
+
+Not needed in `.env` file, but good to know:
+- `DB_PATH` — absolute path to the SQLite file inside the container (`/data/db/sage.db`)
+- `BACKUP_DIR` — absolute path for daily backup files (`/data/backups`)
 
 ### api
 
