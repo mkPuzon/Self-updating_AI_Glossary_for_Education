@@ -74,3 +74,41 @@ def get_related_keywords(keyword: str):
             .all()
         )
         return [{"keyword": r.keyword_b} for r in rows]
+
+
+@app.get("/api/graph")
+def get_graph(top_n: int = 100, min_edge_score: int = 2):
+    top_n = max(1, min(top_n, 500))
+    min_edge_score = max(1, min_edge_score)
+
+    with Session(engine) as session:
+        top_keywords = (
+            session.query(Keyword)
+            .order_by(Keyword.count.desc())
+            .limit(top_n)
+            .all()
+        )
+        nodes = [{"id": k.keyword, "count": k.count} for k in top_keywords]
+        node_set = {k.keyword for k in top_keywords}
+
+        if not node_set:
+            return {"nodes": [], "links": []}
+
+        edges = (
+            session.query(KeywordCooccurrence)
+            .filter(KeywordCooccurrence.score >= min_edge_score)
+            .filter(KeywordCooccurrence.keyword_a.in_(node_set))
+            .filter(KeywordCooccurrence.keyword_b.in_(node_set))
+            .all()
+        )
+
+        seen = set()
+        links = []
+        for e in edges:
+            a, b = sorted((e.keyword_a, e.keyword_b))
+            if a == b or (a, b) in seen:
+                continue
+            seen.add((a, b))
+            links.append({"source": a, "target": b, "value": e.score})
+
+        return {"nodes": nodes, "links": links}
