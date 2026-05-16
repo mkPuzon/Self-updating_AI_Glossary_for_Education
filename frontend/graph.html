@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAGE — Graph View</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Viaoda+Libre&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="graph-page">
+  <header class="graph-header">
+    <h1>SAGE</h1>
+    <p>Keywords that appear together in a paper.</p>
+    <a class="nav-link" href="/">← Back to search</a>
+  </header>
+
+  <div class="graph-controls">
+    <label>
+      Top N keywords
+      <input id="ctl-top-n" type="number" min="20" max="500" step="10" value="100">
+    </label>
+    <label>
+      Min edge score
+      <input id="ctl-min-edge" type="number" min="1" max="20" step="1" value="1">
+    </label>
+    <button id="ctl-apply" type="button">Apply</button>
+    <div class="graph-search-wrap">
+      <input id="ctl-search" type="search" placeholder="Highlight keyword…" autocomplete="off" spellcheck="false">
+    </div>
+    <span id="ctl-status"></span>
+  </div>
+
+  <div id="graph-container">
+    <svg id="graph-svg"></svg>
+    <div id="graph-tooltip" class="hidden"></div>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="graph.js"></script>
+</body>
+</html>
